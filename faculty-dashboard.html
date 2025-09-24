@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Faculty Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-storage-compat.js"></script>
+    <!-- QR Security Phase 1 -->
+    <script src="js/qr-security-phase1.js"></script>
+</head>
+<body>
+
+    <!-- Faculty Profile Completion Popup -->
+    <div class="profile-popup" id="facultyProfilePopup">
+        <div class="profile-content">
+            <h3 style="color: black; margin-bottom: 15px;">
+                <i class="fas fa-chalkboard-teacher"></i> Complete Your Faculty Profile
+            </h3>
+            <p style="color: #666; margin-bottom: 20px; font-size: 14px;">
+                Please complete your profile to access all dashboard features and start taking attendance.
+            </p>
+            
+            <form id="facultyProfileForm" style="color: black;">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Full Name *</label>
+                    <input type="text" id="facultyFullName" required 
+                           style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; color: black;" 
+                           placeholder="Enter your full name">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Employee ID *</label>
+                    <input type="text" id="facultyEmployeeId" required 
+                           style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; color: black;" 
+                           placeholder="Enter employee ID">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Department(s) * (Select multiple)</label>
+                    <div id="departmentCheckboxes" style="border: 1px solid #ddd; border-radius: 4px; padding: 10px; background: #f9f9f9;">
+                        <div class="department-checkbox-item" style="display: flex; align-items: center; padding: 8px; border-radius: 4px; background: white; border: 1px solid #e0e0e0; margin-bottom: 8px; transition: all 0.2s ease;">
+                            <input type="checkbox" id="dept_technology" value="School of Technology" style="margin-right: 8px; transform: scale(1.1);">
+                            <label for="dept_technology" style="font-size: 14px; font-weight: 400; margin: 0; cursor: pointer; flex: 1;">School of Technology</label>
+                        </div>
+                        <div class="department-checkbox-item" style="display: flex; align-items: center; padding: 8px; border-radius: 4px; background: white; border: 1px solid #e0e0e0; transition: all 0.2s ease;">
+                            <input type="checkbox" id="dept_management" value="School of Management" style="margin-right: 8px; transform: scale(1.1);">
+                            <label for="dept_management" style="font-size: 14px; font-weight: 400; margin: 0; cursor: pointer; flex: 1;">School of Management</label>
+                        </div>
+                    </div>
+                    <p style="color: #999; font-size: 12px; margin-top: 5px;">Select at least one department</p>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Subjects You Teach * (Select multiple)</label>
+                    <div id="subjectsCheckboxes" style="max-height: 200px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; padding: 10px; background: #f9f9f9;">
+                        <!-- Subjects will be populated dynamically -->
+                    </div>
+                    <p style="color: #999; font-size: 12px; margin-top: 5px;">Select at least one subject</p>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Phone Number *</label>
+                    <input type="tel" id="facultyPhone" required 
+                           style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; color: black;" 
+                           placeholder="Enter phone number">
+                </div>
+
+                <div style="text-align: center;">
+                    <button type="submit" 
+                            style="background: #28a745; color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-weight: 500; font-size: 16px;">
+                        <i class="fas fa-check"></i> Complete Profile
+                    </button>
+                    <p style="color: #999; font-size: 12px; margin-top: 10px;">Profile completion is mandatory to access dashboard features</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Photo Verification Modal -->
+    <div id="photoVerificationModal" class="qr-modal" style="display: none;">
+        <div class="qr-modal-content" style="max-width: 90%; max-height: 90%; width: 1200px;">
+            <div class="qr-modal-header">
+                <h3><i class="fas fa-camera-retro"></i> Student Photo Verification</h3>
+                <span class="qr-close" onclick="closePhotoVerificationModal()">&times;</span>
+            </div>
+            
+            <div class="verification-content">
+                <div class="session-info" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 14px;">
+                        <div><strong>School:</strong> <span id="verificationSchool">-</span></div>
+                        <div><strong>Batch:</strong> <span id="verificationBatch">-</span></div>
+                        <div><strong>Subject:</strong> <span id="verificationSubject">-</span></div>
+                        <div><strong>Periods:</strong> <span id="verificationPeriods">-</span></div>
+                    </div>
+                </div>
+                
+                <div class="photos-grid-container" style="max-height: 400px; overflow-y: auto;">
+                    <div id="photosGrid" class="photos-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; padding: 10px;">
+                        <!-- Photo cards will be populated here -->
+                    </div>
+                </div>
+                
+                <div id="noPhotosMessage" style="text-align: center; padding: 40px; color: #666; display: none;">
+                    <i class="fas fa-camera-retro" style="font-size: 48px; margin-bottom: 15px; opacity: 0.3;"></i>
+                    <h4>No Photos Submitted</h4>
+                    <p>No students have submitted photos for verification yet.</p>
+                </div>
+                
+                <div class="verification-actions" style="display: flex; gap: 15px; justify-content: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #dee2e6;">
+                    <button onclick="saveAttendance()" class="save-attendance-btn" style="background: #007bff; color: white; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px; box-shadow: 0 2px 4px rgba(0,123,255,0.3);">
+                        <i class="fas fa-save"></i> Save Attendance
+                    </button>
+                    <button onclick="closePhotoVerificationModal()" class="cancel-btn" style="background: #6c757d; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                </div>
+                
+                <div id="verificationSummary" style="margin-top: 15px; padding: 10px; background: #e9ecef; border-radius: 6px; font-size: 14px; display: none;">
+                    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                        <span><strong>Total Students:</strong> <span id="totalPhotos">0</span></span>
+                        <span style="color: #28a745;"><strong>Present:</strong> <span id="presentCount">0</span></span>
+                        <span style="color: #dc3545;"><strong>Absent:</strong> <span id="absentCount">0</span></span>
+                        <span style="color: #ffc107;"><strong>Not Reviewed:</strong> <span id="pendingCount">0</span></span>
+                    </div>
+                    <div style="text-align: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid #ccc; font-size: 13px; color: #666;">
+                        Click on student photos to toggle Present/Absent status
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Generation Modal -->
+    <div id="qrModal" class="qr-modal" style="display: none;">
+        <div class="qr-modal-content">
+            <div class="qr-modal-header">
+                <h3><i class="fas fa-qrcode"></i> Generate Attendance QR Code</h3>
+                <span class="qr-close" onclick="closeQRModal()">&times;</span>
+            </div>
+            
+            <!-- QR Form -->
+            <div id="qrForm" class="qr-form">
+                <div class="form-group">
+                    <label for="qrSchool">School:</label>
+<select id="qrSchool" onchange="updateQRBatchOptions()" required>
+                        <option value="">Select School</option>
+                        <option value="School of Technology">School of Technology</option>
+                        <option value="School of Management">School of Management</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="qrBatch">Batch:</label>
+                    <select id="qrBatch" required disabled>
+                        <option value="">Select Batch</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="qrSubject">Subject:</label>
+                    <select id="qrSubject" required>
+                        <option value="">Select Subject</option>
+                        <!-- Will be populated from faculty profile -->
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="qrPeriods">Number of Periods:</label>
+                    <select id="qrPeriods" required>
+                        <option value="">Select Periods</option>
+                        <option value="1">1 Period</option>
+                        <option value="2">2 Periods</option>
+                        <option value="3">3 Periods</option>
+                        <option value="4">4 Periods</option>
+                    </select>
+                </div>
+                
+                <button onclick="generateQRCode()" class="generate-btn">
+                    <i class="fas fa-magic"></i> Load QR Code
+                </button>
+            </div>
+            
+            <!-- QR Code Display -->
+            <div id="qrCodeDisplay" class="qr-display" style="display: none;">
+                <div class="qr-info">
+                    <h4>Attendance QR Code</h4>
+                    <div class="session-details">
+                        <p><strong>School:</strong> <span id="displaySchool"></span></p>
+                        <p><strong>Batch:</strong> <span id="displayBatch"></span></p>
+                        <p><strong>Subject:</strong> <span id="displaySubject"></span></p>
+                        <p><strong>Periods:</strong> <span id="displayPeriods"></span></p>
+                    </div>
+                </div>
+                
+                <div class="qr-code-container">
+                    <canvas id="qrCodeCanvas"></canvas>
+                </div>
+                
+                <div class="qr-timer-container">
+                    <div class="timer-display">
+                        <span>Expires in: </span>
+                        <span id="qrTimer" class="timer">30</span>
+                        <span> seconds</span>
+                    </div>
+                    <div id="qrStatus" class="qr-status">
+                        <p>QR Code is active. Students can scan to mark attendance.</p>
+                    </div>
+                </div>
+                
+                <div class="qr-actions">
+                    <button onclick="regenerateQR()" class="regenerate-btn" style="display: none;">
+                        <i class="fas fa-redo"></i> Generate New QR
+                    </button>
+                    <button onclick="closeQRModal()" class="close-btn">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header">
+<div class="header-top">
+        <h1><i class="fas fa-chalkboard-teacher"></i> Faculty Dashboard</h1>
+        <div class="header-actions">
+            <button id="cleanupBtn" class="cleanup-btn" onclick="manualCleanupTempPhotos()" title="Clean up temporary photos"><i class="fas fa-broom"></i></button>
+            <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </div>
+        <!-- Faculty welcome message will be inserted here by JavaScript -->
+    </div>
+
+    <div class="dashboard">
+        <div class="section">
+            <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+            <div class="quick-actions-grid">
+                <button class="action-btn generate-qr" onclick="openQRModal()">
+                    <i class="fas fa-qrcode"></i>
+                    <span>Generate QR</span>
+                </button>
+                <button class="action-btn manual-attendance" onclick="showSection('manualAttendanceSection')">
+                    <i class="fas fa-list-check"></i>
+                    <span>Manual Entry</span>
+                </button>
+                <button class="action-btn view-reports" onclick="showSection('reportsSection')">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>View Reports</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><i class="fas fa-file-alt"></i> Pending Leave Requests</h2>
+            <div id="leaveRequestsList">
+                <p id="no-leave-requests" style="color: #666;">No pending leave requests at the moment.</p>
+            </div>
+        </div>
+
+        <div class="section" id="qrSection" style="display: none;">
+            <h2><i class="fas fa-qrcode"></i> Generate Attendance QR Code</h2>
+            <div class="qr-form">
+                <div class="form-group">
+                    <label for="subjectSelect">Subject:</label>
+                    <select id="subjectSelect" required>
+                        <option value="">Select Subject</option>
+                        <option value="JAVA">JAVA</option>
+                        <option value="DSA">Data Structures & Algorithms</option>
+                        <option value="DBMS">Database Management System</option>
+                        <option value="PYTHON">Python</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="sessionDate">Session Date:</label>
+                    <input type="date" id="sessionDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="sessionTime">Session Time:</label>
+                    <input type="time" id="sessionTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="duration">Duration (minutes):</label>
+                    <input type="number" id="duration" value="60" min="15" required>
+                </div>
+                <button onclick="generateQRCode()" class="generate-btn">
+                    <i class="fas fa-magic"></i> Generate QR
+                </button>
+            </div>
+            <div id="qrDisplay" style="text-align: center; margin-top: 20px; display: none;">
+                <h3>Scan for Attendance</h3>
+                <canvas id="qrcode"></canvas>
+            </div>
+        </div>
+
+        </div>
+
+        <!-- Manual Attendance Section -->
+        <div class="section" id="manualAttendanceSection" style="display: none;">
+            <div class="section-header">
+                <h2><i class="fas fa-list-check"></i> Manual Attendance Entry</h2>
+                <button class="close-section-btn" onclick="closeSection('manualAttendanceSection')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Form for selecting class details -->
+            <div id="attendanceForm" class="attendance-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="manualSchool">School:</label>
+                        <select id="manualSchool" onchange="updateManualBatchOptions()" required>
+                            <option value="">Select School</option>
+                            <option value="School of Technology">School of Technology</option>
+                            <option value="School of Management">School of Management</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="manualBatch">Batch:</label>
+                        <select id="manualBatch" required disabled>
+                            <option value="">Select Batch</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="manualSubject">Subject:</label>
+                        <select id="manualSubject" required>
+                            <option value="">Select Subject</option>
+                            <!-- Will be populated from faculty profile -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="manualPeriods">Number of Periods:</label>
+                        <select id="manualPeriods" required>
+                            <option value="">Select Periods</option>
+                            <option value="1">1 Period</option>
+                            <option value="2">2 Periods</option>
+                            <option value="3">3 Periods</option>
+                            <option value="4">4 Periods</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button onclick="loadStudentsList()" class="load-students-btn">
+                        <i class="fas fa-users"></i> Load Students
+                    </button>
+                    <button onclick="resetAttendanceForm()" class="reset-btn">
+                        <i class="fas fa-refresh"></i> Reset
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Students List -->
+            <div id="studentsContainer" class="students-container" style="display: none;">
+                <div class="attendance-header">
+                    <h3 id="attendanceTitle">Mark Attendance</h3>
+                    <div class="attendance-summary">
+                        <span id="attendanceSummary">0 Present / 0 Total</span>
+                    </div>
+                </div>
+                
+                <div class="bulk-actions">
+                    <button onclick="markAllPresent()" class="bulk-present-btn">
+                        <i class="fas fa-check-double"></i> Mark All Present
+                    </button>
+                    <button onclick="markAllAbsent()" class="bulk-absent-btn">
+                        <i class="fas fa-times-circle"></i> Mark All Absent
+                    </button>
+                </div>
+                
+                <div id="studentsList" class="students-list">
+                    <!-- Students will be populated here -->
+                </div>
+                
+                <div class="submission-actions">
+                    <button onclick="submitManualAttendance()" class="submit-attendance-btn">
+                        <i class="fas fa-save"></i> Submit Attendance
+                    </button>
+                    <button onclick="resetAttendanceForm()" class="cancel-btn">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Reports Section -->
+        <div class="section" id="reportsSection" style="display: none;">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-bar"></i> Attendance Reports</h2>
+                <button class="close-section-btn" onclick="closeSection('reportsSection')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Batch Attendance Report Form -->
+            <div id="batchReportForm" class="report-form" style="display: block;">
+                <h3><i class="fas fa-users"></i> Batch Attendance Report</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="batchReportSchool">School *</label>
+                        <select id="batchReportSchool" onchange="updateBatchReportBatchOptions()" required>
+                            <option value="">Select School</option>
+                            <option value="School of Technology">School of Technology</option>
+                            <option value="School of Management">School of Management</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="batchReportBatch">Batch *</label>
+                        <select id="batchReportBatch" required disabled>
+                            <option value="">Select Batch</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="batchReportSubject">Subject *</label>
+                        <select id="batchReportSubject" required>
+                            <option value="">Select Subject</option>
+                            <!-- Will be populated from faculty profile -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="batchReportDate">Date *</label>
+                        <input type="date" id="batchReportDate" required>
+                        <small class="date-help-text" style="color: #666; font-size: 0.85rem; margin-top: 4px; display: block;">
+                            📅 Select a past or current date (future dates not allowed)
+                        </small>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button onclick="generateBatchAttendanceReport()" class="generate-report-btn">
+                        <i class="fas fa-search"></i> View Batch Report
+                    </button>
+                    <button onclick="resetBatchReportForm()" class="reset-btn">
+                        <i class="fas fa-refresh"></i> Reset
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Batch Report Display -->
+            <div id="batchReportDisplay" class="batch-report-display" style="display: none;">
+                <div class="batch-report-header">
+                    <h3>Batch Attendance Report</h3>
+                    <div class="batch-report-info">
+                        <div class="info-row">
+                            <span><strong>School:</strong> <span id="batchReportSchoolName">-</span></span>
+                            <span><strong>Batch:</strong> <span id="batchReportBatchName">-</span></span>
+                        </div>
+                        <div class="info-row">
+                            <span><strong>Subject:</strong> <span id="batchReportSubjectName">-</span></span>
+                            <span><strong>Date:</strong> <span id="batchReportDateSelected">-</span></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="batch-summary">
+                    <div class="summary-card present">
+                        <div class="summary-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h4 id="batchTotalPresent">0</h4>
+                            <p>Students Present</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card absent">
+                        <div class="summary-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h4 id="batchTotalAbsent">0</h4>
+                            <p>Students Absent</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card total">
+                        <div class="summary-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h4 id="batchTotalStudents">0</h4>
+                            <p>Total Students</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card percentage">
+                        <div class="summary-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h4 id="batchAttendancePercentage">0%</h4>
+                            <div class="percentage-bar-container">
+                                <div id="batchPercentageBar" class="percentage-bar" style="width: 0%; background-color: #28a745;"></div>
+                            </div>
+                            <p>Batch Attendance</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="batch-students-list">
+                    <h4><i class="fas fa-list"></i> Student Attendance Details</h4>
+                    <div class="table-container">
+                        <table class="batch-attendance-table">
+                                <thead>
+                                    <tr>
+                                        <th>S.No.</th>
+                                        <th>Student Name</th>
+                                        <th>Enrollment ID</th>
+                                        <th>Total Classes Today</th>
+                                        <th>Classes Attended Today</th>
+                                        <th>Overall Subject Percentage</th>
+                                        <th>Overall Percentage</th>
+                                    </tr>
+                                </thead>
+                            <tbody id="batchStudentsTable">
+                                <!-- Student records will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="batch-report-actions">
+                    <button onclick="printBatchReport()" class="print-btn">
+                        <i class="fas fa-print"></i> Print Report
+                    </button>
+                    <button onclick="exportBatchToExcel()" class="export-btn">
+                        <i class="fas fa-download"></i> Export to Excel
+                    </button>
+                    <button onclick="resetBatchReportForm()" class="back-btn">
+                        <i class="fas fa-arrow-left"></i> New Search
+                    </button>
+                </div>
+            </div>
+            
+        <!-- Loading State -->
+            <div id="reportLoading" class="loading-students" style="display: none;">
+                <i class="fas fa-spinner"></i>
+                <p>Loading attendance report...</p>
+            </div>
+        </div>
+
+        <!-- Photo Viewer Modal -->
+        <div id="photoModal" class="qr-modal" style="display: none;">
+            <div class="qr-modal-content" style="max-width: 600px;">
+                <div class="qr-modal-header">
+                    <h3><i class="fas fa-camera"></i> Attendance Photo</h3>
+                    <span class="qr-close" onclick="closePhotoModal()">&times;</span>
+                </div>
+                <div class="qr-display" style="text-align: center;">
+                    <div id="photoContainer" style="display: flex; justify-content: center;">
+                        <img id="attendancePhotoImg" alt="Student Attendance Photo" style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);" />
+                    </div>
+                    <div id="photoMeta" style="margin-top: 10px; color: #555;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Student Management Section -->
+        <div class="section" id="studentManagementSection" style="display: none;">
+            <h2><i class="fas fa-users"></i> Student Management</h2>
+            <p style="color: #666; text-align: center; margin: 40px 0;">Student management functionality will be implemented here.</p>
+        </div>
+
+        </div>
+
+    <link rel="stylesheet" href="css/faculty-dashboard.css">
+    <script src="js/firebase-config.js"></script> <script src="js/faculty-dashboard.js"></script>
+</body>
+</html>

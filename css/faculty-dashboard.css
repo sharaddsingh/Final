@@ -1,0 +1,3006 @@
+
+/* =====================================
+   THEME OVERRIDES: Student/Faculty Palette
+   Applies to faculty dashboard only
+   ===================================== */
+:root {
+  --color-primary: #0A3D62; /* Deep Blue */
+  --color-success: #2ECC71; /* Success Green */
+  --color-text: #2C3E50;    /* Dark Text */
+  --color-bg-secondary: #F0F3F4; /* Light Gray */
+  --color-white: #FFFFFF;   /* Pure White */
+  --color-border: #D6DBDF;  /* Subtle border */
+}
+
+/* Base */
+body.faculty-dashboard, body[data-page="faculty-dashboard"] , body {
+  background: linear-gradient(135deg, var(--color-primary), #06283D);
+  color: var(--color-white);
+}
+
+/* Common containers */
+.section, .card, .panel, .widget, .tile {
+  background: var(--color-bg-secondary) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* Headings */
+h1, h2, .title, .section h2 {
+  color: var(--color-primary) !important;
+}
+
+/* Buttons primary/success */
+button, .btn, .btn-primary {
+  background: linear-gradient(135deg, var(--color-success), #27AE60) !important;
+  color: var(--color-white) !important;
+  border: none !important;
+}
+
+/* Info/quick actions */
+.quick-action-btn, .action-btn {
+  background: linear-gradient(45deg, var(--color-primary), #06283D) !important;
+  color: var(--color-white) !important;
+}
+
+/* Left borders (emphasis) */
+.attendance-item, .notification-item, .list-item {
+  border-left: 4px solid var(--color-primary) !important;
+}
+
+/* Tables */
+.table th, .schedule-table th { 
+  background: #E5E8E8 !important; 
+  color: var(--color-text) !important; 
+}
+
+/*
+==================================================
+FACULTY DASHBOARD CSS STYLESHEET
+==================================================
+*/
+
+/* ===== BASE STYLES ===== */
+:root {
+    --primary-color: #007bff;
+    --primary-hover: #0056b3;
+    --success-color: #28a745;
+    --success-hover: #218838;
+    --danger-color: #dc3545;
+    --danger-hover: #c82333;
+    --light-bg: #f8f9fa;
+    --white-bg: #ffffff;
+    --text-color: #333;
+    --border-color: rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    color: var(--text-color);
+    padding: 20px;
+    background: var(--light-bg);
+}
+
+/* ===== LAYOUT & HEADER ===== */
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+    gap: 15px;
+    width: 100%;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: left;
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.header .header-controls {
+    display: flex;
+    align-items: center;
+}
+
+ .dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.section {
+    background: var(--white-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+/* Section Header with Close Button */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    position: relative;
+}
+
+.section-header h2 {
+    margin-bottom: 0;
+    flex: 1;
+}
+
+.close-section-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    position: absolute;
+    top: -5px;
+    right: 0;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+}
+
+.close-section-btn:hover {
+    background: #c82333;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
+}
+
+.close-section-btn:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+}
+
+.close-section-btn i {
+    font-size: 14px;
+}
+
+/* Header Actions */
+.header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.cleanup-btn {
+    padding: 10px 12px;
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 14px;
+}
+
+.cleanup-btn:hover {
+    background-color: #138496;
+}
+
+.logout-btn {
+    padding: 10px 15px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #c82333;
+}
+
+/* Responsive design for section header close button */
+@media screen and (max-width: 768px) {
+    .section-header {
+        flex-wrap: wrap;
+        gap: 10px;
+        padding-bottom: 15px;
+    }
+    
+    .section-header h2 {
+        font-size: 1.1rem;
+        margin-right: 45px; /* Space for close button */
+    }
+    
+    .close-section-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+        top: -2px;
+    }
+    
+    .close-section-btn i {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .section-header {
+        position: relative;
+        padding-bottom: 12px;
+    }
+    
+    .section-header h2 {
+        font-size: 1rem;
+        margin-right: 40px;
+    }
+    
+    .close-section-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 10px;
+        top: 0;
+    }
+    
+    .close-section-btn i {
+        font-size: 10px;
+    }
+}
+
+/* ===== BUTTONS & FORMS ===== */
+button, input, select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+}
+
+select, input[type="text"], input[type="date"], input[type="time"], input[type="number"] {
+    width: 100%;
+}
+
+button {
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+.theme-toggle {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.generate-btn {
+    background: var(--success-color);
+    color: white;
+    border: none;
+    width: 100%;
+    margin-top: 10px;
+}
+.generate-btn:hover {
+    background: var(--success-hover);
+}
+
+/* ===== QUICK ACTIONS ===== */
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.action-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 500;
+}
+.action-btn i {
+    font-size: 1.5rem;
+}
+.action-btn:hover {
+    background: var(--primary-hover);
+}
+
+/* ===== LEAVE REQUESTS (DYNAMIC) ===== */
+#leaveRequestsList {
+    max-height: 500px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-right: 5px;
+}
+
+.leave-request-item {
+    background: #f8f8f8;
+    padding: 18px;
+    border-radius: 10px;
+    border-left: 5px solid var(--primary-color);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.leave-request-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: #f0f8ff;
+}
+
+.leave-info {
+    flex: 1;
+}
+
+.leave-info h4 {
+    margin-bottom: 8px;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.leave-info p {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 4px 0;
+    line-height: 1.4;
+}
+
+.leave-info p:last-child {
+    margin-bottom: 0;
+}
+
+.leave-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 100px;
+}
+
+.approve-btn, .reject-btn {
+    border: none;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.approve-btn { 
+    background: var(--success-color); 
+}
+
+.approve-btn:hover { 
+    background: var(--success-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.reject-btn { 
+    background: var(--danger-color); 
+}
+
+.reject-btn:hover { 
+    background: var(--danger-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+/* Scrollbar styling for leave requests list */
+#leaveRequestsList::-webkit-scrollbar {
+    width: 6px;
+}
+
+#leaveRequestsList::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+#leaveRequestsList::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+#leaveRequestsList::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* ===== FACULTY PROFILE POPUP STYLES ===== */
+.profile-popup {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+}
+
+.profile-content {
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    margin: 3% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.profile-content h3 {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.profile-content h3 i {
+    margin-right: 8px;
+    color: var(--success-color);
+}
+
+/* Subject checkboxes styling */
+#subjectsCheckboxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 8px;
+}
+
+.subject-checkbox-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-radius: 4px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    transition: all 0.2s ease;
+}
+
+.subject-checkbox-item:hover {
+    background: #f0f8ff;
+    border-color: var(--primary-color);
+}
+
+.subject-checkbox-item input[type="checkbox"] {
+    margin-right: 8px;
+    transform: scale(1.1);
+}
+
+.subject-checkbox-item label {
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+    cursor: pointer;
+    flex: 1;
+}
+
+.subject-checkbox-item input[type="checkbox"]:checked + label {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+/* Department checkboxes styling */
+.department-checkbox-item:hover {
+    background: #f0f8ff !important;
+    border-color: var(--primary-color) !important;
+}
+
+.department-checkbox-item input[type="checkbox"]:checked + label {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+/* Form input styling within popup */
+.profile-content input,
+.profile-content select {
+    border: 1px solid #ddd;
+    transition: border-color 0.3s ease;
+}
+
+.profile-content input:focus,
+.profile-content select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.profile-content button[type="submit"] {
+    transition: all 0.3s ease;
+}
+
+.profile-content button[type="submit"]:hover {
+    background: #218838 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+/* Welcome message for completed profile */
+.faculty-welcome {
+    background: linear-gradient(135deg, #e8f5e8, #f0f8ff);
+    border: 1px solid #c3e6cb;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ===== QR MODAL STYLES ===== */
+.qr-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+}
+
+.qr-modal-content {
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    margin: 2% auto;
+    padding: 0;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.qr-modal-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    padding: 20px;
+    border-radius: 15px 15px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.qr-modal-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.qr-close {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.qr-close:hover {
+    transform: scale(1.1);
+}
+
+.qr-form {
+    padding: 30px;
+}
+
+.qr-display {
+    padding: 30px;
+    text-align: center;
+}
+
+.qr-info {
+    margin-bottom: 20px;
+}
+
+.qr-info h4 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.session-details {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+    text-align: left;
+}
+
+.session-details p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.qr-code-container {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.qr-timer-container {
+    margin: 20px 0;
+}
+
+.timer-display {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.timer {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    animation: pulse 1s ease-in-out infinite;
+}
+
+.timer.expired {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    animation: none;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.qr-status {
+    padding: 10px;
+    border-radius: 5px;
+    background: #e8f5e8;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.qr-status.expired {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.qr-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.regenerate-btn, .close-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.regenerate-btn {
+    background: var(--success-color);
+    color: white;
+}
+
+.regenerate-btn:hover {
+    background: var(--success-hover);
+    transform: translateY(-2px);
+}
+
+.close-btn {
+    background: #6c757d;
+    color: white;
+}
+
+.close-btn:hover {
+    background: #545b62;
+    transform: translateY(-2px);
+}
+
+.faculty-welcome h4 {
+    color: var(--success-color);
+    margin-bottom: 8px;
+    /* font-size: 2rem; */
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.faculty-welcome h4 i {
+   
+    color: var(--success-color);
+}
+
+.faculty-welcome p {
+    color: #555;
+    margin: 0;
+    font-size: 1rem;
+    /* line-height: 1.5; */
+    font-weight: 800;
+}
+
+/* ===== COMPREHENSIVE RESPONSIVE DESIGN ===== */
+
+/* Extra Large Desktop (1440px and up) */
+@media screen and (min-width: 1440px) {
+    .dashboard {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+    
+    .header {
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+    
+    body {
+        padding: 20px 40px;
+    }
+    
+    /* Enhanced QR Modal for large screens */
+    .qr-modal-content {
+        max-width: 700px;
+    }
+    
+    .profile-content {
+        max-width: 600px;
+    }
+}
+
+/* Large Desktop (1200px to 1439px) */
+@media screen and (max-width: 1439px) {
+    .dashboard {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+}
+
+/* Standard Desktop (992px to 1199px) */
+@media screen and (max-width: 1199px) {
+    body {
+        padding: 15px;
+    }
+    
+    .dashboard {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 15px;
+    }
+    
+    .section {
+        padding: 18px;
+    }
+}
+
+/* Tablet Landscape (768px to 991px) */
+@media screen and (max-width: 991px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding-bottom: 15px;
+    }
+    
+    .header-top {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .header h1 {
+        font-size: 1.6rem;
+    }
+    
+    .dashboard {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    
+    .quick-actions-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+    }
+    
+    .action-btn {
+        padding: 12px;
+    }
+    
+    .action-btn i {
+        font-size: 1.3rem;
+    }
+    
+    .action-btn span {
+        font-size: 0.85rem;
+    }
+    
+    /* Enhanced form responsiveness */
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    /* Better modal sizing */
+    .qr-modal-content,
+    .profile-content {
+        width: 95%;
+        max-width: none;
+    }
+    
+    /* Improved table scrolling */
+    .table-container {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .attendance-table th,
+    .attendance-table td {
+        white-space: nowrap;
+        min-width: 100px;
+    }
+}
+
+/* Tablet Portrait (576px to 767px) */
+@media screen and (max-width: 767px) {
+    body {
+        padding: 10px;
+    }
+    
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .header-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        width: 100%;
+    }
+    
+    .header h1 {
+        font-size: 1.8rem;
+        text-align: left;
+        margin-bottom: 0;
+        word-break: break-word;
+    }
+    
+    .header .header-controls {
+        align-self: flex-start;
+        width: 100%;
+    }
+    
+    .theme-toggle {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+        width: auto;
+        min-width: 120px;
+    }
+    
+    .dashboard {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .section {
+        padding: 15px;
+        margin-bottom: 10px;
+    }
+    
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .action-btn {
+        padding: 15px 10px;
+        min-height: 80px;
+        justify-content: center;
+    }
+    
+    .action-btn span {
+        font-size: 0.8rem;
+        text-align: center;
+    }
+    
+    /* Enhanced form elements */
+    .form-group select,
+    .form-group input {
+        font-size: 16px; /* Prevent zoom on iOS */
+        padding: 12px;
+    }
+    
+    /* Better button sizing */
+    button {
+        min-height: 44px; /* Touch-friendly */
+    }
+    
+    /* Faculty welcome message - tablet */
+    .faculty-welcome {
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+    
+    .faculty-welcome h4 {
+        font-size: 1.6rem;
+        margin-bottom: 8px;
+    }
+    
+    .faculty-welcome h4 i {
+        font-size: 1.4rem;
+    }
+    
+    .faculty-welcome p {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+    
+    /* QR Form responsiveness */
+    .qr-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .form-group {
+        margin-bottom: 12px;
+    }
+    
+    .form-group label {
+        font-size: 0.9rem;
+    }
+    
+    .form-group input,
+    .form-group select {
+        padding: 12px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .generate-btn {
+        padding: 12px;
+        font-size: 1rem;
+    }
+    
+    /* Leave requests responsiveness */
+    .leave-request-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .leave-actions {
+        flex-direction: row;
+        gap: 10px;
+        min-width: auto;
+    }
+    
+    .approve-btn,
+    .reject-btn {
+        flex: 1;
+        padding: 12px 10px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Mobile Landscape (481px to 575px) */
+@media screen and (max-width: 575px) {
+    .header h1 {
+        font-size: 1.2rem;
+    }
+    
+    .section {
+        padding: 12px;
+        border-radius: 8px;
+    }
+    
+    h2 {
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+    }
+    
+    .quick-actions-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    
+    .action-btn {
+        padding: 12px 8px;
+        gap: 6px;
+    }
+    
+    .action-btn i {
+        font-size: 1.2rem;
+    }
+    
+    .action-btn span {
+        font-size: 0.75rem;
+    }
+    
+    /* Faculty welcome message - responsive */
+    .faculty-welcome {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .faculty-welcome h4 {
+        font-size: 1.4rem;
+        margin-bottom: 6px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .faculty-welcome h4 i {
+        font-size: 1.2rem;
+    }
+    
+    .faculty-welcome p {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+}
+
+/* Mobile Portrait (320px to 480px) */
+@media screen and (max-width: 480px) {
+    body {
+        padding: 8px;
+        min-width: 320px; /* Prevent horizontal scroll */
+    }
+    
+    .header {
+        padding: 15px 0;
+        margin-bottom: 15px;
+    }
+    
+    .header h1 {
+        font-size: 1.4rem;
+        line-height: 1.2;
+        word-break: break-word;
+    }
+    
+    .theme-toggle {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        width: 100%;
+        max-width: 150px;
+    }
+    
+    .section {
+        padding: 12px;
+        border-radius: 8px;
+    }
+    
+    h2 {
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+    }
+    
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .action-btn {
+        padding: 16px;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 15px;
+        text-align: left;
+        min-height: 60px;
+        border-radius: 8px;
+    }
+    
+    .action-btn i {
+        font-size: 1.3rem;
+        flex-shrink: 0;
+    }
+    
+    .action-btn span {
+        font-size: 0.95rem;
+        font-weight: 500;
+    }
+    
+    /* Enhanced mobile forms */
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+    
+    .form-group select,
+    .form-group input {
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 2px solid #ddd;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .form-group select:focus,
+    .form-group input:focus {
+        border-color: var(--primary-color);
+        outline: none;
+    }
+    
+    /* Better modal experience */
+    .qr-modal-content,
+    .profile-content {
+        width: calc(100vw - 16px);
+        margin: 8px;
+        border-radius: 12px;
+        max-height: calc(100vh - 40px);
+    }
+    
+    /* Leave request items - stack everything */
+    .leave-request-item {
+        padding: 12px;
+    }
+    
+    .leave-info h4 {
+        font-size: 1rem;
+    }
+    
+    .leave-info p {
+        font-size: 0.85rem;
+    }
+    
+    .leave-actions {
+        gap: 8px;
+    }
+    
+    .approve-btn,
+    .reject-btn {
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+    
+    /* QR display adjustments */
+    #qrDisplay h3 {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+    
+    #qrcode {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* QR Modal Responsive Adjustments */
+@media screen and (max-width: 991px) {
+    .qr-modal-content {
+        width: 95%;
+        margin: 3% auto;
+    }
+    
+    .qr-form {
+        padding: 20px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .qr-display {
+        padding: 20px;
+    }
+    
+    .qr-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .regenerate-btn,
+    .close-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 15px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .qr-modal-content {
+        width: 98%;
+        margin: 2% auto;
+        max-height: 95vh;
+    }
+    
+    .qr-modal-header {
+        padding: 15px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    .qr-modal-header h3 {
+        font-size: 1.2rem;
+    }
+    
+    .qr-form {
+        padding: 15px;
+        gap: 12px;
+    }
+    
+    .qr-display {
+        padding: 15px;
+    }
+    
+    .qr-code-container {
+        padding: 15px;
+        margin: 15px 0;
+    }
+    
+    .session-details {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+    
+    .timer-display {
+        font-size: 1.1rem;
+    }
+    
+    .timer {
+        font-size: 1rem;
+        padding: 6px 12px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .qr-modal-content {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        max-height: 100vh;
+        height: 100vh;
+    }
+    
+    .qr-modal-header {
+        border-radius: 0;
+        padding: 12px;
+    }
+    
+    .qr-modal-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .qr-close {
+        font-size: 24px;
+    }
+    
+    .qr-form {
+        padding: 12px;
+    }
+    
+    .qr-display {
+        padding: 12px;
+    }
+    
+    .form-group {
+        margin-bottom: 10px;
+    }
+    
+    .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 4px;
+    }
+    
+    .form-group select {
+        padding: 12px;
+        font-size: 16px; /* Prevents zoom on iOS */
+        border-radius: 6px;
+    }
+    
+    .generate-btn {
+        padding: 15px;
+        font-size: 1rem;
+        border-radius: 6px;
+    }
+    
+    .qr-code-container {
+        padding: 10px;
+        margin: 10px 0;
+    }
+    
+    .session-details {
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+    
+    .timer-display {
+        font-size: 1rem;
+    }
+    
+    .timer {
+        font-size: 0.9rem;
+        padding: 5px 10px;
+    }
+    
+    .qr-actions {
+        padding: 0 12px 12px;
+        margin-top: 15px;
+    }
+    
+    .regenerate-btn,
+    .close-btn {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Profile Popup Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    .profile-content {
+        margin: 2% auto;
+        padding: 20px;
+        width: 95%;
+        max-height: 95vh;
+    }
+    
+    #subjectsCheckboxes {
+        grid-template-columns: 1fr;
+        max-height: 150px;
+    }
+    
+    .profile-content h3 {
+        font-size: 1.3rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .profile-content {
+        margin: 1% auto;
+        padding: 15px;
+        width: 98%;
+        border-radius: 8px;
+    }
+    
+    .profile-content h3 {
+        font-size: 1.2rem;
+    }
+    
+    .profile-content input,
+    .profile-content select {
+        padding: 10px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .profile-content button[type="submit"] {
+        padding: 10px 20px;
+        font-size: 15px;
+    }
+    
+    .department-checkbox-item,
+    .subject-checkbox-item {
+        padding: 6px;
+        font-size: 13px;
+    }
+}
+
+/* Touch-friendly improvements for mobile */
+@media (hover: none) and (pointer: coarse) {
+    .action-btn,
+    .approve-btn,
+    .reject-btn,
+    .generate-btn,
+    .theme-toggle,
+    .load-students-btn,
+    .reset-btn,
+    .submit-attendance-btn,
+    .cancel-btn,
+    .generate-report-btn {
+        min-height: 48px; /* iOS recommended touch target size */
+        touch-action: manipulation; /* Eliminates delay on touch */
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    .action-btn:active,
+    .approve-btn:active,
+    .reject-btn:active,
+    .generate-btn:active {
+        transform: scale(0.96);
+        transition: transform 0.1s ease;
+    }
+    
+    /* Better touch targets for form elements */
+    select, input[type="text"], input[type="date"], input[type="time"], input[type="number"] {
+        min-height: 44px;
+        touch-action: manipulation;
+    }
+    
+    /* Improved checkbox touch targets */
+    .attendance-checkbox,
+    .subject-checkbox-item input[type="checkbox"],
+    .department-checkbox-item input[type="checkbox"] {
+        min-width: 20px;
+        min-height: 20px;
+        transform: scale(1.3);
+    }
+}
+
+/* High DPI/Retina Display Adjustments */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+    .action-btn i,
+    .approve-btn i,
+    .reject-btn i {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* Dark mode preference support */
+@media (prefers-color-scheme: dark) {
+    /* Users with dark mode preference will see enhanced contrast */
+    .section {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .leave-request-item:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .spinner {
+        animation: none;
+    }
+}
+
+/* ===== MANUAL ATTENDANCE STYLES ===== */
+.attendance-form {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.load-students-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.load-students-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.reset-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.reset-btn:hover {
+    background: #545b62;
+    transform: translateY(-2px);
+}
+
+/* Students Container */
+.students-container {
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.attendance-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.attendance-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.attendance-summary {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.bulk-actions {
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.bulk-present-btn {
+    background: var(--success-color);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+}
+
+.bulk-present-btn:hover {
+    background: var(--success-hover);
+    transform: translateY(-1px);
+}
+
+.bulk-absent-btn {
+    background: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+}
+
+.bulk-absent-btn:hover {
+    background: var(--danger-hover);
+    transform: translateY(-1px);
+}
+
+.students-list {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.student-card {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.student-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.student-card.present {
+    border-color: var(--success-color);
+    background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+}
+
+.student-card.absent {
+    border-color: var(--danger-color);
+    background: linear-gradient(135deg, #f8e8e8, #fdf0f0);
+}
+
+.student-info h4 {
+    margin: 0 0 8px 0;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.student-info p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.attendance-checkbox {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+.submission-actions {
+    padding: 20px;
+    background: #f8f9fa;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.submit-attendance-btn {
+    background: var(--success-color);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.submit-attendance-btn:hover {
+    background: var(--success-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.cancel-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cancel-btn:hover {
+    background: #545b62;
+    transform: translateY(-2px);
+}
+
+/* Loading state */
+.loading-students {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.loading-students i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments for manual attendance */
+@media screen and (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .attendance-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .bulk-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .students-list {
+        grid-template-columns: 1fr;
+        max-height: 300px;
+    }
+    
+    .submission-actions {
+        flex-direction: column;
+    }
+    
+    /* Manual attendance form responsive adjustments */
+    .attendance-form .form-group select {
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 6px;
+        max-width: 100%;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23666' d='m2 0-2 2h4zm0 5 2-2h-4z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        background-size: 12px;
+        padding-right: 32px;
+    }
+    
+    .attendance-form .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+        font-weight: 600;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .load-students-btn,
+    .reset-btn {
+        padding: 12px 16px;
+        font-size: 0.9rem;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .attendance-form {
+        padding: 15px;
+        border-radius: 8px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .students-list {
+        padding: 15px;
+        gap: 12px;
+        grid-template-columns: 1fr;
+    }
+    
+    .student-card {
+        padding: 15px;
+        border-radius: 8px;
+        min-height: 60px;
+    }
+    
+    .student-card .student-info h4 {
+        font-size: 0.95rem;
+        margin-bottom: 6px;
+    }
+    
+    .student-card .student-info p {
+        font-size: 0.85rem;
+    }
+    
+    /* Enhanced mobile-optimized dropdowns */
+    .attendance-form .form-group select {
+        padding: 12px 32px 12px 12px;
+        font-size: 16px; /* Prevent zoom */
+        line-height: 1.4;
+        border-radius: 6px;
+        border: 2px solid #ddd;
+        background-size: 12px;
+        background-position: right 10px center;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+    
+    .attendance-form .form-group select:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    }
+    
+    .attendance-form .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--text-color);
+    }
+    
+    .form-group {
+        margin-bottom: 16px;
+    }
+    
+    .load-students-btn,
+    .reset-btn {
+        padding: 14px 16px;
+        font-size: 0.9rem;
+        min-height: 48px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+    
+    /* Better bulk action buttons */
+    .bulk-actions {
+        padding: 12px 15px;
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .bulk-present-btn,
+    .bulk-absent-btn {
+        padding: 12px 16px;
+        font-size: 0.9rem;
+        min-height: 44px;
+        border-radius: 6px;
+    }
+    
+    /* Improved submission actions */
+    .submission-actions {
+        padding: 15px;
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .submit-attendance-btn,
+    .cancel-btn {
+        padding: 14px 20px;
+        font-size: 1rem;
+        min-height: 48px;
+        border-radius: 8px;
+    }
+}
+
+/* ===== REPORTS SECTION STYLES ===== */
+/* Report Display */
+.report-display {
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.report-header .report-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Percentage Bar */
+.percentage-bar-container {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 8px 0;
+}
+
+.percentage-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    background: var(--success-color);
+}
+
+/* Attendance Records Table */
+.attendance-records {
+    padding: 20px;
+}
+
+.attendance-records h4 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.table-container {
+    overflow-x: auto;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    background: white;
+}
+
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.attendance-table th,
+.attendance-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.attendance-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: var(--text-color);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.attendance-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.attendance-table .present-row {
+    background: rgba(40, 167, 69, 0.05);
+}
+
+.attendance-table .absent-row {
+    background: rgba(220, 53, 69, 0.05);
+}
+
+.attendance-table .present-row:hover {
+    background: rgba(40, 167, 69, 0.1);
+}
+
+.attendance-table .absent-row:hover {
+    background: rgba(220, 53, 69, 0.1);
+}
+.report-form {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.generate-report-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.generate-report-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+/* Report Results */
+.report-results {
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.report-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.report-header h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.report-info {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    display: inline-block;
+}
+
+/* Summary Cards */
+.report-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+}
+
+.summary-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.summary-card.present {
+    border-left: 4px solid var(--success-color);
+}
+
+.summary-card.absent {
+    border-left: 4px solid var(--danger-color);
+}
+
+.summary-card.percentage {
+    border-left: 4px solid #17a2b8;
+}
+
+.summary-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.summary-card.present .summary-icon {
+    background: rgba(40, 167, 69, 0.1);
+    color: var(--success-color);
+}
+
+.summary-card.absent .summary-icon {
+    background: rgba(220, 53, 69, 0.1);
+    color: var(--danger-color);
+}
+
+.summary-card.percentage .summary-icon {
+    background: rgba(23, 162, 184, 0.1);
+    color: #17a2b8;
+}
+
+.summary-content h4 {
+    margin: 0 0 5px 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.summary-content p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Attendance Details */
+.attendance-details {
+    padding: 20px;
+}
+
+.attendance-details h4 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.attendance-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+}
+
+.attendance-record {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border-bottom: 1px solid #e9ecef;
+    background: white;
+    transition: background 0.2s ease;
+}
+
+.attendance-record:last-child {
+    border-bottom: none;
+}
+
+.attendance-record:hover {
+    background: #f8f9fa;
+}
+
+.attendance-date {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.attendance-status {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.attendance-status.present {
+    background: rgba(40, 167, 69, 0.1);
+    color: var(--success-color);
+}
+
+.attendance-status.absent {
+    background: rgba(220, 53, 69, 0.1);
+    color: var(--danger-color);
+}
+
+/* Report Actions */
+.report-actions {
+    padding: 20px;
+    background: #f8f9fa;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.print-btn, .export-btn, .back-btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+}
+
+.print-btn {
+    background: #6c757d;
+    color: white;
+}
+
+.print-btn:hover {
+    background: #545b62;
+    transform: translateY(-1px);
+}
+
+.export-btn {
+    background: var(--success-color);
+    color: white;
+}
+
+.export-btn:hover {
+    background: var(--success-hover);
+    transform: translateY(-1px);
+}
+
+.back-btn {
+    background: var(--primary-color);
+    color: white;
+}
+
+.back-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+/* Reports Responsive Design */
+@media screen and (max-width: 768px) {
+    .report-summary {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .summary-card {
+        padding: 15px;
+    }
+    
+    .summary-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .summary-content h4 {
+        font-size: 1.5rem;
+    }
+    
+    .report-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .report-form .form-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .generate-report-btn,
+    .reset-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .report-header {
+        padding: 15px;
+    }
+    
+    .report-header h3 {
+        font-size: 1.2rem;
+    }
+    
+    .report-info {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
+    
+    .summary-card {
+        padding: 12px;
+        gap: 10px;
+    }
+    
+    .summary-content h4 {
+        font-size: 1.3rem;
+    }
+    
+    .attendance-details {
+        padding: 15px;
+    }
+    
+    .attendance-record {
+        padding: 10px 12px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .report-actions {
+        padding: 15px;
+    }
+    
+    .print-btn, .export-btn, .back-btn {
+        padding: 12px;
+        justify-content: center;
+    }
+}
+
+/* ===== ADDITIONAL RESPONSIVE ENHANCEMENTS ===== */
+
+/* Report Type Tabs Responsiveness */
+.report-type-selection {
+    margin-bottom: 20px;
+}
+
+.report-type-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-1px);
+}
+
+@media screen and (max-width: 768px) {
+    .report-type-tabs {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .tab-btn {
+        padding: 14px;
+        font-size: 0.85rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .tab-btn {
+        padding: 12px;
+        font-size: 0.8rem;
+        min-height: 44px;
+    }
+    
+    .tab-btn i {
+        font-size: 1rem;
+    }
+}
+
+/* Batch Report Display Responsive */
+.batch-report-display {
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.batch-report-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.batch-report-header h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.batch-report-info {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.batch-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    padding: 20px;
+    background: #f8f9fa;
+}
+
+.summary-card.total {
+    border-left: 4px solid #6c757d;
+}
+
+.summary-card.total .summary-icon {
+    background: rgba(108, 117, 125, 0.1);
+    color: #6c757d;
+}
+
+.batch-students-list {
+    padding: 20px;
+}
+
+.batch-students-list .table-container {
+    background: white;
+    border-radius: 8px;
+    overflow-x: auto;
+    overflow-y: visible;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid #e9ecef;
+    margin-top: 10px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.batch-students-list h4 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.batch-attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.batch-attendance-table th,
+.batch-attendance-table td {
+    padding: 14px 12px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 0.9rem;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* Specific column alignments and widths for 7-column layout */
+/* S.No. */
+.batch-attendance-table th:nth-child(1),
+.batch-attendance-table td:nth-child(1) {
+    text-align: center;
+    width: 60px;
+    padding: 14px 8px;
+    font-weight: 600;
+}
+
+/* Student Name */
+.batch-attendance-table th:nth-child(2),
+.batch-attendance-table td:nth-child(2) {
+    text-align: left;
+    min-width: 180px;
+    padding: 14px 16px;
+}
+
+/* Enrollment ID */
+.batch-attendance-table th:nth-child(3),
+.batch-attendance-table td:nth-child(3) {
+    text-align: center;
+    width: 130px;
+    padding: 14px 10px;
+}
+
+/* Total Classes Today */
+.batch-attendance-table th:nth-child(4),
+.batch-attendance-table td:nth-child(4) {
+    text-align: center;
+    width: 120px;
+    font-weight: 600;
+    background-color: #f8f9fa;
+}
+
+/* Classes Attended Today */
+.batch-attendance-table th:nth-child(5),
+.batch-attendance-table td:nth-child(5) {
+    text-align: center;
+    width: 130px;
+    font-weight: 600;
+}
+
+/* Subject Percentage */
+.batch-attendance-table th:nth-child(6),
+.batch-attendance-table td:nth-child(6) {
+    text-align: center;
+    width: 140px;
+    font-weight: 600;
+}
+
+/* Overall Percentage */
+.batch-attendance-table th:nth-child(7),
+.batch-attendance-table td:nth-child(7) {
+    text-align: center;
+    width: 140px;
+    font-weight: 600;
+}
+
+.batch-attendance-table th {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    font-weight: 700;
+    color: var(--text-color);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    border-bottom: 2px solid #dee2e6;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.batch-attendance-table tbody tr:nth-child(even) {
+    background: #fbfbfb;
+}
+
+.batch-attendance-table tbody tr:hover {
+    background: #e3f2fd !important;
+    transform: scale(1.01);
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.batch-attendance-table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.batch-report-actions {
+    padding: 20px;
+    background: #f8f9fa;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 768px) {
+    .batch-summary {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 15px;
+    }
+    
+    .batch-report-header {
+        padding: 15px;
+    }
+    
+    .batch-report-header h3 {
+        font-size: 1.2rem;
+    }
+    
+    .batch-students-list {
+        padding: 15px;
+    }
+    
+    .batch-attendance-table th,
+    .batch-attendance-table td {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+    
+    /* Adjust column widths for mobile */
+    .batch-attendance-table th:nth-child(2),
+    .batch-attendance-table td:nth-child(2) {
+        min-width: 140px;
+        padding: 10px 12px;
+    }
+    
+    .batch-attendance-table th:nth-child(3),
+    .batch-attendance-table td:nth-child(3) {
+        width: 100px;
+    }
+    
+    .batch-attendance-table th:nth-child(4),
+    .batch-attendance-table td:nth-child(4),
+    .batch-attendance-table th:nth-child(5),
+    .batch-attendance-table td:nth-child(5),
+    .batch-attendance-table th:nth-child(6),
+    .batch-attendance-table td:nth-child(6),
+    .batch-attendance-table th:nth-child(7),
+    .batch-attendance-table td:nth-child(7) {
+        width: 90px;
+        padding: 10px 6px;
+    }
+    
+    .batch-report-actions {
+        flex-direction: column;
+        padding: 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .batch-summary {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 12px;
+    }
+    
+    .batch-report-header {
+        padding: 12px;
+    }
+    
+    .batch-report-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .batch-students-list {
+        padding: 12px;
+    }
+    
+    .table-container {
+        font-size: 0.75rem;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .batch-attendance-table th,
+    .batch-attendance-table td {
+        padding: 8px 4px;
+        font-size: 0.7rem;
+        white-space: nowrap;
+        min-width: 70px;
+    }
+    
+    /* More compact layout for very small screens */
+    .batch-attendance-table th:nth-child(1),
+    .batch-attendance-table td:nth-child(1) {
+        width: 40px;
+        padding: 8px 2px;
+    }
+    
+    .batch-attendance-table th:nth-child(2),
+    .batch-attendance-table td:nth-child(2) {
+        min-width: 120px;
+        padding: 8px 6px;
+    }
+    
+    .batch-attendance-table th:nth-child(3),
+    .batch-attendance-table td:nth-child(3) {
+        width: 80px;
+    }
+    
+    .batch-attendance-table th:nth-child(4),
+    .batch-attendance-table td:nth-child(4),
+    .batch-attendance-table th:nth-child(5),
+    .batch-attendance-table td:nth-child(5),
+    .batch-attendance-table th:nth-child(6),
+    .batch-attendance-table td:nth-child(6),
+    .batch-attendance-table th:nth-child(7),
+    .batch-attendance-table td:nth-child(7) {
+        width: 70px;
+        padding: 8px 3px;
+        font-size: 0.65rem;
+    }
+    
+    .batch-report-actions {
+        padding: 12px;
+        gap: 10px;
+    }
+}
+
+/* Enhanced Faculty Welcome Message Responsiveness */
+@media screen and (max-width: 360px) {
+    .faculty-welcome {
+        padding: 12px;
+        margin-bottom: 12px;
+        border-radius: 6px;
+    }
+    
+    .faculty-welcome h4 {
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        line-height: 1.3;
+    }
+    
+    .faculty-welcome h4 i {
+        font-size: 1.1rem;
+    }
+    
+    .faculty-welcome p {
+        font-size: 0.8rem;
+        line-height: 1.3;
+        font-weight: 600;
+    }
+}
+
+/* Ultra Small Mobile Devices (< 360px) */
+@media screen and (max-width: 359px) {
+    body {
+        padding: 6px;
+        min-width: 320px;
+    }
+    
+    .header h1 {
+        font-size: 1.2rem;
+        line-height: 1.2;
+    }
+    
+    .section {
+        padding: 10px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+    }
+    
+    h2 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+    
+    .action-btn {
+        padding: 14px 12px;
+        min-height: 56px;
+        font-size: 0.85rem;
+    }
+    
+    .action-btn i {
+        font-size: 1.2rem;
+    }
+    
+    .form-group select,
+    .form-group input {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 4px;
+    }
+    
+    .generate-btn,
+    .load-students-btn,
+    .reset-btn,
+    .submit-attendance-btn,
+    .cancel-btn {
+        padding: 12px 14px;
+        font-size: 0.85rem;
+        min-height: 44px;
+        border-radius: 6px;
+    }
+    
+    /* Ultra compact modals */
+    .qr-modal-content,
+    .profile-content {
+        width: calc(100vw - 12px);
+        margin: 6px;
+        border-radius: 8px;
+    }
+    
+    .qr-form,
+    .qr-display {
+        padding: 10px;
+    }
+    
+    .profile-content {
+        padding: 12px;
+    }
+}
+
+/* Landscape Orientation Adjustments */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    body {
+        padding: 5px;
+    }
+    
+    .header {
+        padding: 10px 0;
+        margin-bottom: 10px;
+    }
+    
+    .header h1 {
+        font-size: 1.2rem;
+    }
+    
+    .section {
+        padding: 12px;
+        margin-bottom: 8px;
+    }
+    
+    .quick-actions-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+    
+    .action-btn {
+        padding: 10px;
+        min-height: 50px;
+    }
+    
+    /* Compact modals for landscape */
+    .qr-modal-content {
+        max-height: 90vh;
+        margin: 2vh auto;
+    }
+    
+    .profile-content {
+        max-height: 90vh;
+        margin: 2vh auto;
+    }
+    
+    .students-list {
+        max-height: 200px;
+    }
+}
+
+/* Better Focus States for Accessibility */
+@media (prefers-reduced-motion: no-preference) {
+    button:focus,
+    select:focus,
+    input:focus {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+        transition: outline-offset 0.2s ease;
+    }
+    
+    .action-btn:focus {
+        outline-color: white;
+        outline-offset: 4px;
+    }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .section {
+        border: 2px solid var(--text-color);
+    }
+    
+    .action-btn {
+        border: 2px solid currentColor;
+    }
+    
+    .student-card {
+        border-width: 3px;
+    }
+    
+    .summary-card {
+        border-left-width: 6px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .theme-toggle,
+    .action-btn,
+    .approve-btn,
+    .reject-btn,
+    .report-actions,
+    .batch-report-actions {
+        display: none;
+    }
+    
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+    
+    .section {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #000;
+        margin-bottom: 20px;
+    }
+    
+    .report-results,
+    .report-display,
+    .batch-report-display {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+    
+    .report-header,
+    .batch-report-header {
+        background: #f8f9fa !important;
+        color: #000 !important;
+    }
+    
+    .summary-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .attendance-table,
+    .batch-attendance-table {
+        border: 1px solid #000;
+    }
+    
+    .attendance-table th,
+    .attendance-table td,
+    .batch-attendance-table th,
+    .batch-attendance-table td {
+        border: 1px solid #000;
+        padding: 8px;
+    }
+}

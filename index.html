@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Attendance App</title>
+  <style>
+    
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+  html{
+ height: auto;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
+  }
+
+
+
+  body {
+     overflow-x: hidden;
+  overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100dvh;
+    width: 100%;
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    z-index: 0;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    background:  linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("https://cache.careers360.mobi/media/article_images/2023/7/29/PW_IOI_Front.jpg") center/cover no-repeat;
+    z-index: -1;
+  }
+.container.wrapper {
+  max-width: 95vw;
+  width: 400px;
+  margin: 0 auto;
+}
+  .wrapper {
+    width: 100%;
+    max-width: 360px;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+    transition: all 0.3s ease;
+  }
+
+  .wrapper:hover {
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.8);
+  }
+
+  .container {
+    background: rgba(247, 245, 245, 0.6);
+    padding: 25px 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 360px;
+    text-align: center;
+  }
+
+  h2 {
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.7rem;
+    color: black;
+  }
+
+  select,
+  input,
+  button {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    font-size: 15px;
+  }
+
+  button {
+    background-color: #000000;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-family: 'Poppins', sans-serif;
+    border: none;
+    outline: none;
+  }
+
+  button:hover {
+    background-color: #f6f9fb;
+    color: #000000;
+  }
+
+  #message {
+    margin-top: 10px;
+    color: red;
+  }
+
+  #toggleLink {
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 13px;
+  }
+
+  input {
+    background-color: transparent !important;
+    color: black;
+    border: none;
+    outline: none;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+    -webkit-text-fill-color: rgb(16, 1, 1) !important;
+    background-color: transparent !important;
+    caret-color: white;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  input[type="email"],
+  input[type="text"],
+  input[type="password"] {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: transparent;
+  }
+
+  .input-field {
+    position: relative;
+    border-bottom: 2px solid rgba(14, 0, 0, 0.3);
+    margin: 20px 0;
+  }
+
+  .input-field input {
+    width: 100%;
+    padding: 10px 0 5px 0;
+    font-size: 16px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: black;
+  }
+
+  .input-field label {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    color: black;
+    font-size: 16px;
+    pointer-events: none;
+    transition: 0.3s ease;
+    padding-left: 10px;
+  }
+
+  .input-field input:focus ~ label,
+  .input-field input:valid ~ label {
+    font-size: 0.9rem;
+    top: 0;
+    transform: translateY(-30%);
+    color: black;
+  }
+
+  .forget {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 25px 0 35px 0;
+    color: black;
+  }
+
+  #remember {
+    accent-color: #ffdde1;
+  }
+
+  .forget label {
+    display: flex;
+    align-items: center;
+  }
+
+  .forget label p {
+    margin-left: 8px;
+  }
+
+  .wrapper a {
+    color: #ffdde1;
+    text-decoration: none;
+  }
+
+  .wrapper a:hover {
+    text-decoration: underline;
+  }
+
+  .select_role {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    background-color: black;
+    color: white;
+    margin-bottom: 0px;
+  }
+  form {
+  width: 100%;
+}
+
+  /* Enhanced Modal Styles for Consistency */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+  }
+
+  .modal-content {
+    background: linear-gradient(to right, #a3c1ad, #007fff);
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 350px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  .modal h3 {
+    color: #fff;
+    margin-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.6rem;
+  }
+
+  .modal p {
+    color: #f8f8f8;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .modal-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+  }
+
+  .modal-btn.primary {
+    background-color: #66023c;
+    color: white;
+  }
+
+  .modal-btn.primary:hover {
+    background-color: #8b004d;
+  }
+
+  .modal-btn.secondary {
+    background-color: #fff;
+    color: #333;
+  }
+
+  .modal-btn.secondary:hover {
+    background-color: #eee;
+  }
+
+  .modal-input {
+    width: 100%;
+    padding: 8px 12px;
+    margin: 10px 0 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .modal-input:focus {
+    outline: none;
+    border-color: #66023c;
+  }
+
+  @media (max-width: 480px) {
+     .container.wrapper {
+    padding: 20px 15px;
+    width: 100%;
+  }
+form {
+  width: 100%;
+}
+  .select_role,
+  input,
+  button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+    .container {
+      max-width: 95%;
+      padding: 20px 15px;
+    }
+
+    .wrapper {
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+    }
+
+    button,
+    input {
+      font-size: 14px;
+      padding: 10px;
+    }
+
+    .select_role {
+      font-size: 15px;
+      padding: 12px;
+    }
+
+    .input-field label {
+      font-size: 14px;
+    }
+   
+  }
+  </style>
+</head>
+
+<body>
+
+  <div class="container wrapper">
+    <h2 id="formTitle">Login to Attendance System</h2>
+
+    <select id="roleSelect" class="select_role" required>
+      <option value="" disabled selected>Select Role</option>
+      <option value="student" class="role1">Student</option>
+      <option value="faculty" class="role2">Faculty</option>
+    </select>
+
+    <p style="color: #666; font-size: 14px; margin: 15px 0; text-align: center;">
+      Please select your role and sign in with Google
+    </p>
+
+    <button id="googleBtn">Sign In with Google</button>
+    <div id="message"></div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/common-utils.js"></script>
+  <script src="js/mobile-utils.js"></script>
+
+<script>
+  const roleSelect = document.getElementById("roleSelect");
+  const googleBtn = document.getElementById("googleBtn");
+  const message = document.getElementById("message");
+  
+  // Handle redirect result when user returns from Google sign-in
+  auth.getRedirectResult().then(async (result) => {
+    if (result.user) {
+      console.log('User signed in via redirect:', result.user.email);
+      
+      // Get stored role from sessionStorage
+      const role = sessionStorage.getItem('selectedRole');
+      if (!role) {
+        console.error('No role found in sessionStorage after redirect');
+        return;
+      }
+      
+      // Clear the stored role
+      sessionStorage.removeItem('selectedRole');
+      
+      // Process the sign-in result
+      await processSignInResult(result, role);
+    }
+  }).catch((error) => {
+    console.error('Redirect result error:', error);
+    message.style.color = "red";
+    message.textContent = "Sign-in failed. Please try again.";
+  });
+
+  // Utility function to show modal messages
+  function showModal(title, message) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.innerHTML = `
+      <div class="modal-content">
+        <h3>${title}</h3>
+        <p>${message}</p>
+        <div class="modal-buttons">
+          <button class="modal-btn primary" onclick="this.closest('.modal').remove()">OK</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    modal.style.display = 'block';
+  }
+
+
+  function redirectToDashboard(role) {
+    console.log('redirectToDashboard called with role:', role);
+    if (role === "student") {
+      console.log('Redirecting to student dashboard');
+      window.location.href = "student-dashboard.html";
+    } else if (role === "faculty") {
+      console.log('Redirecting to faculty dashboard');
+      window.location.href = "faculty-dashboard.html";
+    } else {
+      console.error("Invalid role:", role);
+    }
+  }
+  
+  // Process sign-in result (used for both popup and redirect)
+  async function processSignInResult(result, role) {
+    const user = result.user;
+    const email = user.email;
+
+    const studentRegex = /@pwioi\.com$/i;
+    const facultyRegex = /@gmail\.com$/i;
+    const validStudent = studentRegex.test(email);
+    const validFaculty = facultyRegex.test(email);
+
+    if ((role === "student" && !validStudent) || (role === "faculty" && !validFaculty)) {
+      alert(`Only ${role === "student" ? "@pwioi.com" : "@gmail.com"} emails allowed for ${role}s.`);
+      await auth.signOut();
+      return;
+    }
+
+    // Mobile check for students only
+    if (role === "student" && !isMobileDevice()) {
+      showModal('Mobile Device Required', 'Students can only access the attendance system from mobile devices. Please use your mobile phone or tablet.');
+      await auth.signOut();
+      return;
+    }
+
+    // Handle different logic for students vs faculty
+    if (role === "faculty") {
+      // Faculty: Create/check user document immediately
+      const docRef = db.collection("users").doc(user.uid);
+      const docSnap = await docRef.get();
+      
+      if (!docSnap.exists) {
+        // New faculty - create user document
+        await docRef.set({
+          email,
+          role,
+          createdAt: new Date(),
+          isNewSignup: true
+        });
+      } else if (docSnap.data().role !== role) {
+        alert("Access denied: Role mismatch.");
+        await auth.signOut();
+        return;
+      }
+    } else {
+      // Students: Only check if they already have a completed profile
+      const docRef = db.collection("users").doc(user.uid);
+      const docSnap = await docRef.get();
+      
+      if (docSnap.exists) {
+        // Student exists - check role match
+        if (docSnap.data().role !== role) {
+          alert("Access denied: Role mismatch.");
+          await auth.signOut();
+          return;
+        }
+        
+        // Check if they have completed profile
+        const profileRef = db.collection("profiles").doc(user.uid);
+        const profileSnap = await profileRef.get();
+        
+        if (!profileSnap.exists) {
+          // User exists but no profile - redirect to complete profile
+          console.log('Student user exists but no profile found, redirecting to complete-profile.html');
+          window.location.href = "complete-profile.html";
+          return;
+        }
+        
+        // Check device binding for existing students
+        const userData = docSnap.data();
+        if (userData.deviceId && !isCurrentDevice(userData.deviceId)) {
+          showModal('Device Not Recognized', 'This account is bound to a different device. Please use your registered mobile device to access the attendance system.');
+          await auth.signOut();
+          return;
+        }
+      }
+      // If student doesn't exist at all, they'll be directed to profile completion below
+    }
+
+    // Final redirection logic
+    if (role === "student") {
+      // Check if student has completed profile
+      const docRef = db.collection("users").doc(user.uid);
+      const docSnap = await docRef.get();
+      
+      if (!docSnap.exists) {
+        // New student - redirect to profile completion
+        console.log('New student login detected, redirecting to complete-profile.html');
+        window.location.href = "complete-profile.html";
+      } else {
+        // Existing student - redirect to dashboard
+        console.log('Existing student login, redirecting to dashboard');
+        redirectToDashboard(role);
+      }
+    } else {
+      // Faculty - redirect to dashboard
+      console.log('Faculty login, redirecting to dashboard');
+      redirectToDashboard(role);
+    }
+  }
+
+  googleBtn.onclick = async () => {
+    const role = roleSelect.value;
+    if (!role) return alert("Please select your role first");
+
+    const provider = new firebase.auth.GoogleAuthProvider();
+    
+    // Set custom parameters for better mobile compatibility
+    provider.setCustomParameters({
+      prompt: 'select_account'
+    });
+
+    try {
+      message.style.color = "blue";
+      message.textContent = "Signing in...";
+      
+      const result = await auth.signInWithPopup(provider);
+      await processSignInResult(result, role);
+    } catch (error) {
+      console.error('Authentication error:', error);
+      
+      // Handle popup blocked error
+      if (error.code === 'auth/popup-blocked') {
+        message.style.color = "orange";
+        message.textContent = "Popup was blocked. Trying alternative method...";
+        
+        // Try redirect method as fallback
+        try {
+          // Store the selected role for after redirect
+          sessionStorage.setItem('selectedRole', role);
+          await auth.signInWithRedirect(provider);
+        } catch (redirectError) {
+          message.style.color = "red";
+          message.textContent = "Please allow popups for this site or try refreshing the page.";
+        }
+      } else if (error.code === 'auth/cancelled-popup-request' || error.code === 'auth/popup-closed-by-user') {
+        message.style.color = "gray";
+        message.textContent = "Sign-in was cancelled. Please try again.";
+      } else {
+        message.style.color = "red";
+        message.textContent = error.message || "Sign-in failed. Please try again.";
+      }
+    }
+  };
+</script>
+
+
+</body>
+
+</html> 

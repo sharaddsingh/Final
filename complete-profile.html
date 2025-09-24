@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/profile.css">
+    
+    <!-- Firebase scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/common-utils.js"></script>
+    <script src="js/mobile-utils.js"></script>
+</head>
+<body>
+    <div class="profile-container">
+        <h2>Complete Your Profile</h2>
+        <form id="completeProfileForm">
+            <label for="fullName">Full Name *</label>
+            <input type="text" id="fullName" required placeholder="Enter your full name">
+
+            <label for="regNumber">Enrollment ID *</label>
+            <input type="text" id="regNumber" required placeholder="Enter enrollment ID">
+
+            <label for="school">School *</label>
+            <select id="school" required onchange="updateBatchOptions()">
+                <option value="">Select School</option>
+                <option value="School of Technology">School of Technology</option>
+                <option value="School of Management">School of Management</option>
+            </select>
+
+            <label for="batch">Batch *</label>
+            <select id="batch" required disabled>
+                <option value="">Select Batch</option>
+            </select>
+
+            <label for="phone">Phone Number *</label>
+            <input type="tel" id="phone" required placeholder="Enter phone number">
+
+            <button type="submit">Complete Profile</button>
+        </form>
+    </div>
+    <script src="js/complete-profile.js"></script>
+</body>
+</html>

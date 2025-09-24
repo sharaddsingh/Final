@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-storage-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/common-utils.js"></script>
+  <!-- QR Security Phase 1 -->
+  <script src="js/qr-security-phase1.js"></script>
+  <!-- Photo Submission Fallback -->
+  <script src="js/photo-fallback.js"></script>
+  
+  <!-- Define logout function immediately -->
+  <script>
+    // Simple and efficient logout function
+    window.logout = async function() {
+      console.log('Logout initiated');
+      
+      try {
+        // Clear all local data
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // Clear any cached user data
+        if (typeof window.userCache !== 'undefined') {
+          window.userCache = null;
+        }
+        
+        // Sign out from Firebase if available
+        if (typeof firebase !== 'undefined' && firebase.auth && firebase.auth().currentUser) {
+          await firebase.auth().signOut();
+          console.log('Firebase signout successful');
+        }
+        
+        // Show success message
+        alert('Logged out successfully!');
+        
+        // Redirect to login page
+        window.location.href = 'index.html';
+        
+      } catch (error) {
+        console.error('Logout error:', error);
+        // Force cleanup and redirect even on error
+        localStorage.clear();
+        sessionStorage.clear();
+        alert('Logout completed. Redirecting...');
+        setTimeout(() => window.location.href = 'index.html', 500);
+      }
+    };
+    
+    console.log('Logout function initialized');
+  </script>
+</head>
+
+<body>
+
+  <!-- Header with welcome message and logout -->
+  <div class="header">
+    <div>
+      <h1 style="color: white;"><i class="fas fa-graduation-cap" style="color: white;"></i> Student Dashboard</h1>
+      <div id="welcomeMessage" class="welcome-message">
+        <span id="studentName">Welcome! Loading your profile...</span>
+      </div>
+    </div>
+    <div>
+      <button class="theme-toggle" onclick="logout()" style="margin-left: 10px;">
+        <i class="fas fa-sign-out-alt"></i>
+        Logout
+      </button>
+    </div>
+  </div>
+
+<div id="lowAttendanceWarning" class="warning" style="display: none;"></div>
+
+  <!-- Profile Popup -->
+  <div class="profile-popup" id="profilePopup">
+    <div class="profile-content">
+      <h3 style="color: black;">Complete Your Profile</h3>
+      <p style="color: #666; margin-bottom: 20px; font-size: 14px;">Please complete your profile to access the dashboard features.</p>
+      
+      <form id="profileForm" style="color: black;">
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: 500;">Full Name *</label>
+          <input type="text" id="fullName" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; color: black;" placeholder="Enter your full name">
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: 500;">Registration Number *</label>
+          <input type="text" id="regNumber" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; color: black;" placeholder="Enter registration number">
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: 500;">School *</label>
+          <select id="school" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; color: black;" onchange="updateBatchOptions()">
+            <option value="">Select School</option>
+            <option value="School of Technology">School of Technology</option>
+            <option value="School of Management">School of Management</option>
+          </select>
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: 500;">Batch *</label>
+          <select id="batch" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; color: black;" disabled>
+            <option value="">Select Batch</option>
+          </select>
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: 500;">Phone Number *</label>
+          <input type="tel" id="phone" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; color: black;" placeholder="Enter phone number">
+        </div>
+        
+        <!-- Profile Photo Section -->
+        <div class="profile-photo-section">
+          <img id="profilePhoto" class="profile-photo" src="data:image/svg+xml,%3csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='80' height='80' fill='%23cccccc'/%3e%3ctext x='50%25' y='50%25' font-size='14' text-anchor='middle' dy='.3em' fill='%23666666'%3ePhoto%3c/text%3e%3c/svg%3e" alt="Profile Photo">
+          <div>
+            <label for="photoUpload" class="photo-upload-label">
+              <i class="fas fa-camera"></i> Upload Photo
+            </label>
+            <input type="file" id="photoUpload" class="photo-upload" accept="image/*" onchange="handlePhotoUpload(event)">
+          </div>
+        </div>
+
+        <div style="text-align: center;">
+          <button type="submit" style="background: #28a745; color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-weight: 500; font-size: 16px;">
+            <i class="fas fa-check"></i> Complete Profile
+          </button>
+          <p style="color: #999; font-size: 12px; margin-top: 10px;">Profile completion is mandatory to access dashboard features</p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="dashboard">
+    <!-- Today's Class Attendance -->
+    <div class="section">
+      <h2><i class="fas fa-calendar-day"></i> Today's Class Attendance</h2>
+      <p style="color: #ccc; font-size: 14px; margin-bottom: 15px;">Your attendance status for today's classes</p>
+      
+      <div id="todayAttendanceList" style="display: flex; flex-direction: column; gap: 10px;">
+        <!-- Today's attendance will be populated dynamically -->
+      </div>
+      
+      <div id="noTodayAttendance" class="no-data" style="text-align: center; padding: 30px; color: #999; display: none;">
+        <i class="fas fa-calendar-day" style="font-size: 36px; margin-bottom: 10px; opacity: 0.5;"></i>
+        <h4 style="margin: 0 0 8px 0; color: #666;">No Attendance Data</h4>
+        <p style="margin: 0; font-size: 14px;">Today's attendance will appear here once marked by faculty</p>
+      </div>
+    </div>
+
+    <!-- QR Scanner Section -->
+    <div class="section qr-scanner-section">
+      <h2><i class="fas fa-qrcode"></i> Scan QR for Attendance</h2>
+      <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Scan the QR code displayed by your faculty to mark attendance</p>
+      
+      <div class="qr-scanner-container">
+        <button id="openScannerBtn" class="scanner-btn" onclick="openQRScanner()">
+          <i class="fas fa-camera"></i>
+          Open QR Scanner
+        </button>
+        
+        <div id="scannerModal" class="scanner-modal" style="display: none;">
+          <div class="scanner-modal-content">
+            <div class="scanner-header">
+              <h3><i class="fas fa-qrcode"></i> QR Code Scanner</h3>
+              <span class="scanner-close" onclick="closeQRScanner()">&times;</span>
+            </div>
+            
+            <div class="scanner-body">
+              <div id="qrReader" class="qr-reader"></div>
+              <div class="scanner-instructions">
+                <p>Position the QR code within the frame to scan</p>
+                <p style="font-size: 12px; color: #666;">Make sure you're in the correct class and the QR code is not expired</p>
+                <p id="scannerStatus" style="font-size: 14px; color: #6c757d; margin-top: 10px;">Scanner inactive</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Photo Capture Modal -->
+        <div id="photoCaptureModal" class="scanner-modal" style="display: none;">
+          <div class="scanner-modal-content">
+            <div class="scanner-header">
+              <h3><i class="fas fa-camera"></i> Photo Verification</h3>
+              <span class="scanner-close" onclick="closePhotoCaptureModal()">&times;</span>
+            </div>
+            
+            <div class="scanner-body">
+              <div id="photoCapture" class="photo-capture-container">
+                <div id="photoCaptureView" class="photo-view">
+                  <video id="photoCaptureVideo" autoplay muted></video>
+                  <canvas id="photoCaptureCanvas" style="display: none;"></canvas>
+                  <div id="capturedPhotoPreview" class="captured-photo" style="display: none;">
+                    <img id="capturedPhotoImg" alt="Captured Photo">
+                  </div>
+                </div>
+                
+                <div class="photo-instructions">
+                  <div id="photoInstructionsText">
+                    <p><strong>Photo Verification Required</strong></p>
+                    <p style="font-size: 14px;">Position your face within the frame for verification</p>
+                    <p style="font-size: 12px; color: #666;">This photo will be saved with your attendance record</p>
+                  </div>
+                  <div id="photoStatus" style="font-size: 14px; color: #6c757d; margin-top: 10px;">Camera inactive</div>
+                </div>
+                
+                <div class="photo-actions">
+                  <button id="capturePhotoBtn" class="capture-btn" onclick="captureStudentPhoto()" style="display: none;">
+                    <i class="fas fa-camera"></i>
+                    Capture Photo
+                  </button>
+                  <button id="retakePhotoBtn" class="retake-btn" onclick="retakePhoto()" style="display: none;">
+                    <i class="fas fa-redo"></i>
+                    Retake
+                  </button>
+                  <button id="confirmPhotoBtn" class="confirm-btn" onclick="confirmPhotoAndMarkAttendance()" style="display: none;">
+                    <i class="fas fa-check"></i>
+                    Confirm & Mark Attendance
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="overallSection">
+      <h2><i class="fas fa-chart-pie"></i> Overall Attendance</h2>
+      <canvas id="overallChart" style="display: none;"></canvas>
+      <div id="noOverallData" class="no-data" style="text-align: center; padding: 40px; color: #999;">
+        <i class="fas fa-percentage" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+        <h4 style="margin: 0 0 10px 0; color: #666;">No Overall Statistics Available</h4>
+        <p style="margin: 0; font-size: 14px;">Overall attendance percentage will be calculated once attendance data is available</p>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="section" id="notificationsSection" style="display: none;">
+      <h2><i class="fas fa-bell"></i> Notifications <span id="notificationCount" class="notification-badge">0</span></h2>
+      <div id="notificationsList">
+        <!-- Notifications will be added dynamically -->
+      </div>
+      <div id="noNotifications" class="no-notifications" style="display: none;">
+        <i class="fas fa-bell-slash" style="color: #999; font-size: 24px;"></i>
+        <p style="color: #999; margin-top: 10px;">No notifications at this time</p>
+      </div>
+    </div>
+
+    <!-- Yesterday's Attendance -->
+    <div class="section" id="yesterdaySection">
+      <h2><i class="fas fa-history"></i> Yesterday's Attendance</h2>
+      <ul id="yesterdayList" style="display: none;">
+        <!-- Yesterday's attendance will be populated dynamically -->
+      </ul>
+      <div id="noYesterdayData" class="no-data" style="text-align: center; padding: 20px; color: #999;">
+        <i class="fas fa-calendar-times" style="font-size: 24px; margin-bottom: 10px;"></i>
+        <p>No attendance data available for yesterday</p>
+      </div>
+    </div>
+
+    <div class="section" id="subjectWiseSection">
+      <h2><i class="fas fa-chart-bar"></i> Subject-wise Attendance</h2>
+      <canvas id="subjectChart" style="display: none;"></canvas>
+      <div id="noSubjectData" class="no-data" style="text-align: center; padding: 40px; color: #999;">
+        <i class="fas fa-chart-line" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+        <h4 style="margin: 0 0 10px 0; color: #666;">No Attendance Data Available</h4>
+        <p style="margin: 0; font-size: 14px;">Subject-wise attendance will appear here once you start marking attendance</p>
+      </div>
+    </div>
+
+    <div class="section leave-form">
+      <h2><i class="fas fa-file-alt"></i> Leave Application</h2>
+      
+      <!-- Recent Leave Requests (Last 12 hours) -->
+      <div id="recentLeaveRequests" style="margin-bottom: 15px; display: none;">
+        <h4>Recent Leave Requests (Last 12 hours)</h4>
+        <div id="recentLeaveList">
+          <!-- Recent leave requests will be populated dynamically -->
+        </div>
+      </div>
+      
+      <form id="leaveForm">
+        <input type="date" id="leaveDate" name="leaveDate" required />
+        <input type="number" name="periods" placeholder="Number of classes" required />
+        <select name="subject" required>
+          <option value="">Select Subject</option>
+          <option value="JAVA">JAVA</option>
+          <option value="DSA">DSA</option>
+          <option value="DBMS">DBMS</option>
+          <option value="EXCEL">EXCEL</option>
+          <option value="JAVASCRIPT">JAVASCRIPT</option>
+          <option value="MASTERCLASS">MASTERCLASS</option>
+          <option value="PYTHON">PYTHON</option>
+          <option value="BUSINESS COMMUNICATION">BUSINESS COMMUNICATION</option>
+          <option value="CRITICAL COMMUNICATION">CRITICAL COMMUNICATION</option>
+        </select>
+        <textarea name="reason" placeholder="Reason" required></textarea>
+        <input type="file" name="attachment" />
+        <button type="submit">Submit Leave</button>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- Attendance Confirmation Modal -->
+  <div id="attendanceModal" class="attendance-modal" style="display: none;">
+    <div class="attendance-modal-content">
+      <div class="attendance-modal-header">
+        <h3><i class="fas fa-check-circle"></i> Confirm Attendance</h3>
+        <span class="attendance-close" onclick="closeAttendanceModal()">&times;</span>
+      </div>
+      
+      <div class="attendance-modal-body">
+        <div class="attendance-info">
+          <div class="qr-success-icon">
+            <i class="fas fa-qrcode"></i>
+          </div>
+          <h4>QR Code Scanned Successfully!</h4>
+          <div class="session-info">
+            <p><strong>Subject:</strong> <span id="confirmSubject"></span></p>
+            <p><strong>Faculty:</strong> <span id="confirmFaculty"></span></p>
+            <p><strong>School:</strong> <span id="confirmSchool"></span></p>
+            <p><strong>Batch:</strong> <span id="confirmBatch"></span></p>
+            <p><strong>Periods:</strong> <span id="confirmPeriods"></span></p>
+            <p><strong>Date:</strong> <span id="confirmDate"></span></p>
+          </div>
+        </div>
+        
+        <div class="attendance-actions">
+          <button id="markAttendanceBtn" class="mark-attendance-btn" onclick="markAttendance()">
+            <i class="fas fa-user-check"></i>
+            MARK ATTENDANCE
+          </button>
+          <button class="cancel-btn" onclick="closeAttendanceModal()">
+            <i class="fas fa-times"></i>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Link external CSS file -->
+  <link rel="stylesheet" href="css/student-dashboard.css?v=20250916211047">
+
+  <!-- Link external JavaScript file -->
+  <script src="js/student-dashboard.js?v=20250916210306"></script>
+  
+
+</body>
+
+</html>
