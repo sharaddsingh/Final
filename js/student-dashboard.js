@@ -1239,24 +1239,12 @@ window.openPhotoCapture = openPhotoCapture;
 window.closePhotoCaptureModal = closePhotoCaptureModal;
 window.captureStudentPhoto = captureStudentPhoto;
 window.retakePhoto = retakePhoto;
-window.confirmPhotoAndMarkAttendance = confirmPhotoAndMarkAttendance;
-window.requestCameraPermission = requestCameraPermission;
 
-/* ===== PAGE INITIALIZATION ===== */
-// Initialize page when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-  // Note: Logout function is already defined in HTML head section
-  
-  // Only initialize charts after a small delay to ensure DOM is ready
-  setTimeout(() => {
-    updateCharts();
-    showLowAttendanceWarnings();
-  }, 100);
-  
-  // Add debug info to console
-  console.log('Student dashboard loaded. Debug functions available:');
-  console.log('- debugCreateTestNotification(status) - Create test notification');
-  console.log('- debugNotificationStatus() - Check notification system status');
-  console.log('- debugTestFirebaseConnection() - Test Firebase connection');
-  console.log('- debugCheckNotificationPermissions() - Test notification permissions');
-});
+function showLowAttendanceWarnings() {
+  try {
+    const warn = document.getElementById('lowAttendanceWarning');
+    if (warn) warn.style.display = 'none';
+  } catch (e) {
+    console.warn('showLowAttendanceWarnings noop:', e);
+  }
+}
