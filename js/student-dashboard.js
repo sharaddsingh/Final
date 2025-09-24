@@ -1,3 +1,90 @@
+// ===== QR Scanner Setup =====
+// Use vars so re-declaration is harmless if this script is loaded multiple times
+var html5QrCode = typeof html5QrCode !== 'undefined' ? html5QrCode : null;
+var qrScanner = typeof qrScanner !== "undefined" ? qrScanner : null;
+
+// Open QR Scanner Modal and start scanning using html5-qrcode
+function openQRScanner() {
+  const modal = document.getElementById('scannerModal');
+  const readerContainerId = 'qrReader';
+  const scannerStatus = document.getElementById('scannerStatus');
+
+  try {
+    if (modal) modal.style.display = 'flex';
+    if (scannerStatus) {
+      scannerStatus.textContent = 'Initializing scanner...';
+      scannerStatus.style.color = '#007bff';
+    }
+
+    // Clean any previous instance DOM leftovers
+    const container = document.getElementById(readerContainerId);
+    if (container) {
+      container.innerHTML = '';
+    }
+
+    // Ensure library is available
+    if (typeof Html5Qrcode === 'undefined') {
+      console.error('Html5Qrcode library not loaded');
+      showNotification('Scanner Error', 'QR scanner library not loaded');
+      return;
+    }
+
+    // Create/replace instance
+    html5QrCode = new Html5Qrcode(readerContainerId, { verbose: false });
+
+    // Choose camera: prefer back camera
+    Html5Qrcode.getCameras().then(cameras => {
+      let cameraId = undefined;
+      if (cameras && cameras.length > 0) {
+        const back = cameras.find(c => /back|rear|environment/i.test(c.label));
+        cameraId = (back && back.id) || cameras[0].id;
+      }
+
+      const config = { fps: 10, qrbox: 250, aspectRatio: 1.0 }; // reasonable defaults
+
+      // Start either with specific cameraId or facingMode
+      const startTarget = cameraId ? cameraId : { facingMode: 'environment' };
+      return html5QrCode.start(
+        startTarget,
+        config,
+        (decodedText, decodedResult) => {
+          // Debounce: stop immediately after first success
+          try { onScanSuccess(decodedText, decodedResult); } catch (e) { console.error(e); }
+          html5QrCode.stop().then(() => {
+            if (scannerStatus) {
+              scannerStatus.textContent = 'Scan complete';
+              scannerStatus.style.color = '#28a745';
+            }
+          }).catch(err => console.warn('Error stopping after success:', err));
+        },
+        errorMessage => {
+          // Non-fatal scan errors, keep quiet but update status sometimes
+          if (scannerStatus && errorMessage && /not found/i.test(String(errorMessage))) {
+            scannerStatus.textContent = 'Searching for QR...';
+            scannerStatus.style.color = '#6c757d';
+          }
+        }
+      );
+    }).then(() => {
+      console.log('QR Scanner started');
+      if (scannerStatus) {
+        scannerStatus.textContent = 'Scanner active - point at QR code';
+        scannerStatus.style.color = '#28a745';
+      }
+    }).catch(err => {
+      console.error('Failed to start QR scanner:', err);
+      showNotification('Scanner Error', 'Unable to start camera for QR scanning');
+      if (scannerStatus) {
+        scannerStatus.textContent = 'Scanner failed to start';
+        scannerStatus.style.color = '#dc3545';
+      }
+    });
+  } catch (error) {
+    console.error('Error opening QR scanner:', error);
+    showNotification('Scanner Error', 'Failed to initialize QR scanner.');
+  }
+}
+
 // Close QR Scanner Modal
 function closeQRScanner() {
   const modal = document.getElementById('scannerModal');
